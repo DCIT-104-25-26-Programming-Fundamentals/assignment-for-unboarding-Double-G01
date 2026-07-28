@@ -89,4 +89,124 @@
 # =============================================================================
 # YOUR CODE BELOW — remove the # symbols from the scaffold and fill it in
 # =============================================================================
+# =============================================================================
+# PROGRAMMING FUNDAMENTALS — Assignment 8
+# Topic: Lists of Dictionaries, Loops, and Functions
+# =============================================================================
+#
+# TASK: Student Record Management System
+# =============================================================================
 
+
+def add_student(students):
+    """Feature 1: Collects name, ID, and scores, then adds the record."""
+    name = input("Student name: ")
+    student_id = int(input("Student ID: "))
+
+    num_scores = int(input("How many scores? "))
+    scores = []
+    for i in range(num_scores):
+        score = float(input(f"Enter score {i + 1}: "))
+        scores.append(score)
+
+    student = {
+        "name": name,
+        "id": student_id,
+        "scores": scores,
+    }
+    students.append(student)
+
+    print(f'Student "{name}" added successfully.')
+
+
+def calculate_average(scores):
+    """Helper: Returns the average of a list of scores, rounded to 2 decimals."""
+    if not scores:
+        return 0.0
+    return round(sum(scores) / len(scores), 2)
+
+
+def display_all_students(students):
+    """Feature 2: Prints a formatted table of every student's info."""
+    if not students:
+        print("No students have been added yet.")
+        return
+
+    print("-" * 60)
+    print(f'{"Name":<15}{"ID":<12}{"Scores":<20}{"Average":<10}')
+    print("-" * 60)
+
+    for student in students:
+        scores_str = ", ".join(str(s) for s in student["scores"])
+        average = calculate_average(student["scores"])
+        print(f'{student["name"]:<15}{student["id"]:<12}{scores_str:<20}{average:<10}')
+
+    print("-" * 60)
+
+
+def find_student_average(students, student_id):
+    """Feature 3: Finds a student by ID and returns their average score.
+
+    Returns None if no student with that ID exists.
+    """
+    for student in students:
+        if student["id"] == student_id:
+            return calculate_average(student["scores"])
+    return None
+
+
+def run_add_student(students):
+    add_student(students)
+
+
+def run_display_all(students):
+    display_all_students(students)
+
+
+def run_calculate_average(students):
+    student_id = int(input("Enter student ID: "))
+    average = find_student_average(students, student_id)
+
+    if average is None:
+        print(f"Error: No student found with ID {student_id}.")
+        return
+
+    # find the student's name for the confirmation message
+    for student in students:
+        if student["id"] == student_id:
+            print(f"{student['name']}'s average score: {average}")
+            break
+
+
+def print_menu():
+    print("\n================================")
+    print("   STUDENT RECORD SYSTEM MENU")
+    print("================================")
+    print("1. Add student")
+    print("2. Display all students")
+    print("3. Calculate average score")
+    print("4. Quit")
+
+
+def main():
+    students = []
+
+    while True:
+        print_menu()
+        choice = input("Enter your choice (1-4): ")
+
+        if choice == "1":
+            run_add_student(students)
+        elif choice == "2":
+            run_display_all(students)
+        elif choice == "3":
+            run_calculate_average(students)
+        elif choice == "4":
+            print("Goodbye!")
+            break
+        else:
+            print("Invalid choice. Please enter a number between 1 and 4.")
+
+
+if __name__ == "__main__":
+    main()
